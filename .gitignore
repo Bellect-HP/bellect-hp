@@ -4,3 +4,12 @@
 # Editor
 .vscode/
 *.swp
+
+# 制作用ロゴ素材（Illustrator等・サイト表示には未使用）
+Bellect-logo_all_dataup/
+
+# 未使用の作業用画像
+unnamed*.png
+
+# Claude Code ローカル設定
+.claude/
