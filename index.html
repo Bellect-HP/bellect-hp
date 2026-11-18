@@ -253,10 +253,11 @@
   .biz-more--soon:hover{ color:var(--ink-soft); transform:none; }
 
   /* ===== Business：DNAを主役にした大きい枠＋今後の展開 ===== */
-  .feature{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.1fr); gap:56px; align-items:center; }
-  @media (max-width:860px){ .feature{ grid-template-columns:1fr; gap:28px; } }
-  .feature-media img{ width:100%; height:auto; max-width:400px; margin:0 auto; }
-  @media (max-width:640px){ .feature-media img{ max-width:72%; } }
+  .feature{ display:grid; grid-template-columns:400px minmax(0,1fr); gap:80px; align-items:center; }
+  @media (max-width:860px){ .feature{ grid-template-columns:1fr; gap:20px; } }
+  @media (max-width:640px){ .biz-head{ margin-bottom:28px; } }
+  .feature-media img{ width:100%; height:auto; max-width:400px; margin:0; }
+  @media (max-width:640px){ .feature-media img{ max-width:80%; } }
   .feature-media--icon{ aspect-ratio:4/3; background:var(--gold-wash); display:flex; align-items:center; justify-content:center; }
   .feature-media--icon img{ width:auto; height:96px; }
   .feature-body .biz-tag{ margin-bottom:12px; }
