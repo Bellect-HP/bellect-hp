@@ -252,6 +252,23 @@
   }
   .biz-more--soon:hover{ color:var(--ink-soft); transform:none; }
 
+  /* ===== Business：DNAを主役にした大きい枠＋今後の展開 ===== */
+  .feature{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.1fr); gap:56px; align-items:center; }
+  @media (max-width:860px){ .feature{ grid-template-columns:1fr; gap:28px; } }
+  .feature-media img{ width:100%; height:auto; }
+  .feature-media--icon{ aspect-ratio:4/3; background:var(--gold-wash); display:flex; align-items:center; justify-content:center; }
+  .feature-media--icon img{ width:auto; height:96px; }
+  .feature-body .biz-tag{ margin-bottom:12px; }
+  .feature-badge{ display:inline-block; font-size:12px; letter-spacing:.08em; color:var(--ink); border:1px solid var(--gold); padding:3px 12px; margin-bottom:18px; }
+  .feature-body h3{ font-size:clamp(19px,2.2vw,24px); line-height:1.6; margin-bottom:16px; }
+  .feature-body p{ color:var(--ink-soft); font-size:14px; line-height:2; max-width:36em; margin-bottom:28px; }
+  .upcoming{ margin-top:64px; padding-top:28px; border-top:1px solid var(--hairline); }
+  .upcoming-list{ list-style:none; }
+  .upcoming-list li{ display:flex; align-items:baseline; gap:18px; padding:10px 0; font-size:13.5px; }
+  .up-name{ font-family:var(--display); font-weight:500; color:var(--gold); min-width:7.5em; }
+  .up-desc{ color:var(--ink-soft); flex:1; }
+  .up-status{ font-size:11px; letter-spacing:.08em; color:var(--ink-soft); opacity:.7; }
+
   .company-head{ margin-bottom:32px; }
   .company h2{ font-size:clamp(21px,2.4vw,28px); }
   dl.facts{ font-size:13.5px; max-width:760px; }
@@ -346,37 +363,26 @@ const CONTENT = {
     ]
   },
 
-  businessHeading: "美しさへの、三つの視点。",
+  businessHeading: "事業内容",
 
-  business: [
-    {
-      tag: "DNA",
-      icon: "dna",
-      headingHtml: "ヒトも、犬も。<br>データから、自分に合ったケアへ。",
-      body: "ヒトおよびイヌ向けDNA検査キットの販売を通じて、一人ひとり、そして一頭一頭に合った健康・美容・ライフスタイルの選択をサポートします。",
-      status: "販売中",
-      link: "https://geneus-bellect.jp",
-      external: true,
-      ready: true
-    },
-    {
-      tag: "Cosmetics",
-      icon: "cosmetics",
-      headingHtml: "韓国発、<br>インナーケアという選択を。",
-      body: "韓国発インナーケア商品の国内代理店として販売を展開します。将来的には、OEMによるオリジナルヘアケア商品の展開も予定しています。",
-      status: "詳細準備中",
-      link: "cosmetics.html",
-      ready: false
-    },
-    {
-      tag: "Beauty",
-      icon: "beauty",
-      headingHtml: "あなたに寄り添う、<br>美容サロン体験を。",
-      body: "美容・ウェルネスに関するサロン事業を通じて、お客様一人ひとりに寄り添ったケアと体験を提供します。",
-      status: "2027年 開業準備中",
-      link: "beauty.html",
-      ready: false
-    }
+  // メインで見せる事業（写真付きの大きい枠）
+  // photo に画像ファイル名（例: "images/geneus-kit.jpg"）を入れると写真が表示されます。空のときはDNAアイコンを表示します。
+  featured: {
+    tag: "DNA",
+    badge: "GENEUS 日本総代理店",
+    headingHtml: "ヒトも、犬も。<br>データから、自分に合ったケアへ。",
+    body: "ヒトおよびイヌ向けDNA検査キットの販売を通じて、一人ひとり、そして一頭一頭に合った健康・美容・ライフスタイルの選択をサポートします。",
+    buttonLabel: "公式ストアを見る",
+    link: "https://geneus-bellect.jp",
+    photo: "",
+    photoAlt: "GENEUS DNA検査キット"
+  },
+
+  // 今後の展開（リンクなし・1行ずつ）
+  upcoming: [
+    { name: "Bellect Pet", desc: "犬用おやつ", status: "準備中" },
+    { name: "Cosmetics", desc: "韓国発インナーケア", status: "準備中" },
+    { name: "Beauty", desc: "美容サロン", status: "準備中" }
   ],
 
   company: {
@@ -468,7 +474,11 @@ const CONTENT = {
       <span class="eyebrow">Business</span>
       <h2 id="businessHeading"></h2>
     </div>
-    <div class="biz-grid" id="bizGrid"></div>
+    <div class="feature reveal" id="bizFeature"></div>
+    <div class="upcoming reveal">
+      <span class="eyebrow">今後の展開</span>
+      <ul class="upcoming-list" id="bizUpcoming"></ul>
+    </div>
   </div>
 </section>
 
@@ -512,17 +522,24 @@ const CONTENT = {
 
   document.getElementById('businessHeading').textContent = CONTENT.businessHeading;
 
-  document.getElementById('bizGrid').innerHTML = CONTENT.business.map((b, i) => `
-    <div class="biz-item reveal" style="transition-delay:${i * 0.12}s">
-      <div class="biz-icon"><img src="${ICON_IMAGES[b.icon] || ''}" alt="${b.tag}"></div>
-      <span class="biz-tag">${b.tag}</span>
-      <div class="biz-copy"><p>${b.body}</p></div>
-      ${b.ready
-        ? `<a class="biz-more" href="${b.link}"${b.external ? ' target="_blank" rel="noopener"' : ''}>詳しく見る
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>`
-        : `<span class="biz-more biz-more--soon" aria-disabled="true">準備中</span>`}
+  const F = CONTENT.featured;
+  document.getElementById('bizFeature').innerHTML = `
+    <div class="feature-media">
+      ${F.photo
+        ? `<img src="${F.photo}" alt="${F.photoAlt}">`
+        : `<div class="feature-media--icon"><img src="${ICON_IMAGES.dna || ''}" alt="${F.tag}"></div>`}
     </div>
+    <div class="feature-body">
+      <span class="biz-tag">${F.tag}</span>
+      <span class="feature-badge">${F.badge}</span>
+      <h3>${F.headingHtml}</h3>
+      <p>${F.body}</p>
+      <a class="cta-btn" href="${F.link}" target="_blank" rel="noopener">${F.buttonLabel}</a>
+    </div>
+  `;
+
+  document.getElementById('bizUpcoming').innerHTML = CONTENT.upcoming.map(u => `
+    <li><span class="up-name">${u.name}</span><span class="up-desc">${u.desc}</span><span class="up-status">${u.status}</span></li>
   `).join('');
 
   document.getElementById('companyFacts').innerHTML = CONTENT.company.facts.map(f => `
