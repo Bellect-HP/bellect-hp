@@ -354,8 +354,9 @@ const CONTENT = {
       icon: "dna",
       headingHtml: "ヒトも、犬も。<br>データから、自分に合ったケアへ。",
       body: "ヒトおよびイヌ向けDNA検査キットの販売を通じて、一人ひとり、そして一頭一頭に合った健康・美容・ライフスタイルの選択をサポートします。",
-      status: "販売準備中",
-      link: "dna.html",
+      status: "販売中",
+      link: "https://geneus-bellect.jp",
+      external: true,
       ready: true
     },
     {
@@ -517,7 +518,7 @@ const CONTENT = {
       <span class="biz-tag">${b.tag}</span>
       <div class="biz-copy"><p>${b.body}</p></div>
       ${b.ready
-        ? `<a class="biz-more" href="${b.link}">詳しく見る
+        ? `<a class="biz-more" href="${b.link}"${b.external ? ' target="_blank" rel="noopener"' : ''}>詳しく見る
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>`
         : `<span class="biz-more biz-more--soon" aria-disabled="true">準備中</span>`}
